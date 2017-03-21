@@ -27,17 +27,17 @@
   "Takes a list by and turns adjacent values for which pred returns false into
 a single list, while leaving values for which pred returns true untouched.
 Values for which pred returns true must be separated by at least other value."
-[pred list]
-  (doall
-   (map
-    (fn [x]
-      (if (-> x (first) (pred))
-        (if (> (count x) 1)
-          (throw (IllegalArgumentException.
-                  (str "Sequence not legal in this context:" x)))
-          (first x))
-        x))
-    (partition-by pred list))))
+ [pred list]
+ (doall
+  (map
+   (fn [x]
+     (if (-> x (first) (pred))
+       (if (> (count x) 1)
+         (throw (IllegalArgumentException.
+                 (str "Sequence not legal in this context:" x)))
+         (first x))
+       x))
+   (partition-by pred list))))
 
 
 (defn groupify-at
@@ -164,9 +164,9 @@ values are lists and concats duplicates."
   "Run the hook with optional arguments. Hook functions are run in the order
 that they were added."
   ([hook]
-     (doseq [func @hook] (func)))
+   (doseq [func @hook] (func)))
   ([hook & rest]
-     (doseq [func @hook] (apply func rest))))
+   (doseq [func @hook] (apply func rest))))
 
 
 ;; unlazy map function

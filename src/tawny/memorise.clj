@@ -51,9 +51,9 @@ Returns a sorted map."
 
 This function returns a map from the IRI to the var object(s) which hold it"
   ([]
-     (memorise-map *ns*))
+   (memorise-map *ns*))
   ([namespace]
-     (tawny.lookup/iri-to-var-no-ontology namespace)))
+   (tawny.lookup/iri-to-var-no-ontology namespace)))
 
 (defn generate-obsolete-mapping
   "Takes a list of old labels for an OWLEntity, and the var containing that
@@ -101,8 +101,8 @@ memorise is a map iri to current var"
        (change-values-to-string-set memorise)
        ;; find the mappings that we are missing
        missing-mappings
-       (find-missing-mappings memorise-iri-to-str remember)
-       ]
+       (find-missing-mappings memorise-iri-to-str remember)]
+
 
     ;; generate new symbols for everything
     (doseq [[iri old-symbol-string] missing-mappings]
@@ -110,7 +110,7 @@ memorise is a map iri to current var"
        old-symbol-string (get memorise iri)))))
 
 (defn- memory-merge
-"Accepts key and values as pairs, but preserves values for the
+ "Accepts key and values as pairs, but preserves values for the
 duplicate keys. Returns a single map, with all values as sets."
   [items]
   (reduce

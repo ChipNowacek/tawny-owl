@@ -79,8 +79,8 @@ starts-with. Use this partially applied with a filter for 'read'."
  (let [trans (label-transform o e)]
     (when (nil? trans)
       (println "Unable to generate transform for:" e))
-    trans
-    ))
+    trans))
+
 
 (tawny.owl/defmontfn really-noisy-nil-label-transform
  "Check for empty labels noisily"
@@ -90,18 +90,18 @@ starts-with. Use this partially applied with a filter for 'read'."
     (when (nil? trans)
       (println "Unable to generate transform for:" e))
     (println trans)
-    trans
-    ))
+    trans))
+
 
 (tawny.owl/defmontfn exception-nil-label-transform
  "Check for empty labels noisily"
  [o e]
-  (let [trans (label-transform o e)]
-    (when (nil? trans)
-      (throw (IllegalArgumentException.
-              (str "Unable to generate transform for:" e))))
-    trans
-    ))
+ (let [trans (label-transform o e)]
+   (when (nil? trans)
+     (throw (IllegalArgumentException.
+             (str "Unable to generate transform for:" e))))
+   trans))
+
 
 (defn fragment-transform
   "Create an entity name from the IRI fragment"
@@ -128,16 +128,16 @@ to intern."
   ([ns e]
    (intern-entity ns e default-transform))
   ([ns e transform]
-     (try
-       (when (t/named? e)
-         (let [name
-               (stop-characters-transform (transform e))]
-           (when *noisy-intern*
-             (println "Interning as:" name " entity: " e))
-           (tawny.owl/intern-owl-string ns name e)))
-       (catch IllegalArgumentException i
-         (print "Broken Intern on:" e)
-         (throw i)))))
+   (try
+     (when (t/named? e)
+       (let [name
+             (stop-characters-transform (transform e))]
+         (when *noisy-intern*
+           (println "Interning as:" name " entity: " e))
+         (tawny.owl/intern-owl-string ns name e)))
+     (catch IllegalArgumentException i
+       (print "Broken Intern on:" e)
+       (throw i)))))
 
 (defn iri-mapper
   "Given a map of Ontology IRI strings to document IRI strings, return an

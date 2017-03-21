@@ -75,11 +75,11 @@ Normally, matcher would be used in preference."
 Matchs happen if the entity contains AT LEAST one entity in frame
 values (which are themselves lists) to match ALL frames in the query.
 The keys of the query cannot be logic vars but everything else can."
-[entity query]
-  (l/everyg
-   #(frameo entity query %1)
+ [entity query]
+ (l/everyg
+  #(frameo entity query %1)
    ;; this keys isn't going to work because we could have a logic var
-   (keys query)))
+  (keys query)))
 
 
 (defn typeo

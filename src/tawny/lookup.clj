@@ -97,12 +97,12 @@ space, if it the var is not in the current namespace."
 object. The string will be qualified if the var is not in the current
 namespace."
   ([entity]
-     (resolve-entity entity (all-iri-to-var)))
+   (resolve-entity entity (all-iri-to-var)))
   ([entity iri-to-var]
-      (let [entity-str (named-entity-as-string entity)
-            var (get iri-to-var entity-str)]
-        (when-not (nil? var)
-          (var-maybe-qualified-str var)))))
+   (let [entity-str (named-entity-as-string entity)
+         var (get iri-to-var entity-str)]
+     (when-not (nil? var)
+       (var-maybe-qualified-str var)))))
 
 (defn name-to-var
   "Returns a map of IRI for OWLObjects to the vars which

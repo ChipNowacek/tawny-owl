@@ -76,20 +76,20 @@
   :hermit, :elk or :jfact. It can also be :nil, which will leave no reasoner
   factory set."
   ([]
-     (when (nil? @vreasoner-factory)
-       (throw (IllegalStateException. "No reasoner has been chosen")))
-     @vreasoner-factory)
+   (when (nil? @vreasoner-factory)
+     (throw (IllegalStateException. "No reasoner has been chosen")))
+   @vreasoner-factory)
   ([reasoner-keyword]
-     (dosync
+   (dosync
       ;; blitz the reasoners
       ;; (doseq [^OWLReasoner r @reasoner-list]
       ;;   (when-not (instance? uk.ac.manchester.cs.jfact.JFactReasoner r)
       ;; (.dispose r)))
       ;; blitz the reasoner list
-      (ref-set reasoner-list ())
+    (ref-set reasoner-list ())
       ;; create a new reasoner
-      (ref-set vreasoner-factory
-               (reasoner-factory-1 reasoner-keyword)))))
+    (ref-set vreasoner-factory
+             (reasoner-factory-1 reasoner-keyword)))))
 
 (defn reasoner-progress-monitor-gui
   "Return a new graphical progress monitor."
@@ -97,8 +97,8 @@
   (let [progressbar (JProgressBar.)
         frame (JFrame. "Reasoner Progress")
         content (JPanel.)
-        label (JLabel.)
-        ]
+        label (JLabel.)]
+
     (doto frame
       (.setDefaultCloseOperation WindowConstants/HIDE_ON_CLOSE)
       (.add content))
@@ -108,9 +108,9 @@
       (.add label))
     (.setIndeterminate progressbar true)
     (proxy [org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor] []
-      (reasonerTaskBusy[]
+      (reasonerTaskBusy[])
         ;;(println "Reasoner task busy");; stuff
-        )
+
       (reasonerTaskProgressChanged [val max]
         (doto progressbar
           (.setIndeterminate false)
@@ -130,11 +130,11 @@
   []
   (proxy [org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor] []
     (reasonerTaskBusy[]
-      (println "Reasoner task busy");; stuff
-      )
+      (println "Reasoner task busy"));; stuff
+
     (reasonerTaskProgressChanged [val max]
-      (println "Reasoner task changed" val ":" max)
-      )
+      (println "Reasoner task changed" val ":" max))
+
     (reasonerTaskStarted [name]
       (println "reasoner task started" name))
     (reasonerTaskStopped []
@@ -145,14 +145,14 @@
   "Returns a new progress monitor which is silent."
   []
   (proxy [org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor] []
-    (reasonerTaskBusy[]
-      )
-    (reasonerTaskProgressChanged [_ _]
-      )
-    (reasonerTaskStarted [_]
-      )
-    (reasonerTaskStopped []
-      )))
+    (reasonerTaskBusy[])
+
+    (reasonerTaskProgressChanged [_ _])
+
+    (reasonerTaskStarted [_])
+
+    (reasonerTaskStopped [])))
+
 
 (defn reasoner-progress-monitor-gui-maybe
   "Return a gui monitor unless we are headless."
@@ -270,11 +270,11 @@ ontology is inconsistent"
 (defn no-top-bottom
   "Delete top and bottom from a collection."
  [coll]
-  (set
-   (filter #(not
-             (or (= (owl/owl-thing) %1)
-                 (= (owl/owl-nothing) %1)))
-           coll)))
+ (set
+  (filter #(not
+            (or (= (owl/owl-thing) %1)
+                (= (owl/owl-nothing) %1)))
+          coll)))
 
 (defdontfn isuperclasses
   "Return all superclasses in ontology for name. Returns a (clojure)

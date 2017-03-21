@@ -19,8 +19,8 @@
 
 (defn tracing-println [& _]
   (let [e (Exception.)
-        st (.getStackTrace e)
-        ]
+        st (.getStackTrace e)]
+
     (println "Default ontology used")
     (doseq
         [^StackTraceElement l (take 30 st)
@@ -31,8 +31,8 @@
                 [
                  "tawny.owl$default_ontology"
                  "tawny.util$run_hook" "tawny.owl_test$createandsavefixture$"
-                 "tawny.debug" "leiningen" "clojure"])
-         ]
+                 "tawny.debug" "leiningen" "clojure"])]
+
       (printf "\tfn:%s:cl:%s:ln:%s\n"
               (.getFileName l)
               (.getClassName l)

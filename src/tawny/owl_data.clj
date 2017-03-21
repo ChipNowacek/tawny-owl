@@ -145,8 +145,8 @@ This is to deprecated the :superproperty frame"}
    :disjoint #'add-data-disjoint
    :equivalent #'add-data-equivalent
    :comment #'add-comment
-   :label #'add-label
-   })
+   :label #'add-label})
+
 
 (defdontfn datatype-property-explicit
   "Define a new datatype property with an explicit map"
@@ -228,8 +228,8 @@ which is an OWLDatatype object.
    :annotation #'add-annotation
    :comment #'add-comment
    :label #'add-label
-   :equivalent #'add-datatype-equivalent
-   })
+   :equivalent #'add-datatype-equivalent})
+
 
 (defdontfn datatype-explicit
   "Defines a new datatype."

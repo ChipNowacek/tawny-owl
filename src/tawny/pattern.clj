@@ -184,14 +184,14 @@ whose return values are interned."
   and the entity created, a form suitable for feeding to intern-owl-entities
   is necessary."
  [entity-f o name & options]
-  (let
-      [options
-       (cond
-        (= entity-f o/object-property)
-        (nil-strip-hashify-op options)
-        :default
-        (nil-strip-hashify options))]
-    (Named. name (apply entity-f o name options))))
+ (let
+     [options
+      (cond
+       (= entity-f o/object-property)
+       (nil-strip-hashify-op options)
+       :default
+       (nil-strip-hashify options))]
+   (Named. name (apply entity-f o name options))))
 ;; #+end_src
 
 ;; * Pattern Annotation

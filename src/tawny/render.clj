@@ -62,8 +62,8 @@
             OWLObjectProperty
             OWLOntology
             OWLProperty
-            OWLSubPropertyChainOfAxiom
-            )
+            OWLSubPropertyChainOfAxiom)
+
            (org.semanticweb.owlapi.vocab
             OWLFacet
             OWL2Datatype)
@@ -140,8 +140,8 @@
     :> :>
     :>= :>=
     :>< :><
-    :>=< :>=<
-    }
+    :>=< :>=<}
+
 
    [:keyword]
    {
@@ -187,8 +187,8 @@
     :> :>
     :>= :>=
     :>< :><
-    :>=< :>=<
-    }
+    :>=< :>=<}
+
 
    [:explicit]
    {
@@ -237,8 +237,8 @@
     :> '>
     :>= '>=
     :>< '><
-    :>=< '>=<
-    }
+    :>=< '>=<}
+
 
    []
    {
@@ -501,12 +501,12 @@
                   :irreflexive)
                  (and
                   (EntitySearcher/isReflexive p ont)
-                  :reflexive)
-                 ))
+                  :reflexive)))
+
         lst (if (get options :keyword)
               list
-              list*)
-        ]
+              list*)]
+
     (concat
      (list (named-entity OWLObjectProperty p options)
            (form p options))
@@ -626,8 +626,8 @@
                 (list
                  (and
                   (EntitySearcher/isFunctional p ont)
-                  :functional)
-                 ))
+                  :functional)))
+
         prop (form p options)
         lst (if (get options :keyword)
               list
@@ -875,9 +875,9 @@ depending on the value of *terminal-strategy*"
 
 (defmethod form OWLObjectUnionOf
   [^OWLObjectUnionOf u options]
-   (list*
-    (unnamed-entity :object-or options)
-    (form (.getOperands u) options)))
+  (list*
+   (unnamed-entity :object-or options)
+   (form (.getOperands u) options)))
 
 (defmethod form OWLObjectIntersectionOf
   [^OWLObjectIntersectionOf c options]
@@ -907,7 +907,7 @@ depending on the value of *terminal-strategy*"
     :object-exactly options)
    (.getCardinality c)
    (form (.getProperty c) options)
-        (form (.getFiller c) options)))
+   (form (.getFiller c) options)))
 
 (defmethod form OWLObjectMaxCardinality
   [^OWLObjectMaxCardinality c options]
@@ -915,8 +915,8 @@ depending on the value of *terminal-strategy*"
    (unnamed-entity :object-at-most
                    options)
    (.getCardinality c)
-        (form (.getProperty c) options)
-        (form (.getFiller c) options)))
+   (form (.getProperty c) options)
+   (form (.getFiller c) options)))
 
 (defmethod form OWLObjectMinCardinality
   [^OWLObjectMinCardinality c options]
@@ -993,8 +993,8 @@ element is a list."
   [^OWLDataAllValuesFrom a options]
   (list
    (unnamed-entity :data-only options)
-        (form (.getProperty a) options)
-        (form (.getFiller a) options)))
+   (form (.getProperty a) options)
+   (form (.getFiller a) options)))
 
 (defmethod form OWLDataComplementOf
   [^OWLDataComplementOf c options]
@@ -1028,16 +1028,16 @@ element is a list."
   (list
    (unnamed-entity :data-at-most options)
    (.getCardinality c)
-        (form (.getProperty c) options)
-        (form (.getFiller c) options)))
+   (form (.getProperty c) options)
+   (form (.getFiller c) options)))
 
 (defmethod form OWLDataMinCardinality
   [^OWLDataMinCardinality c options]
   (list
    (unnamed-entity :data-at-least options)
    (.getCardinality c)
-        (form (.getProperty c) options)
-        (form (.getFiller c) options)))
+   (form (.getProperty c) options)
+   (form (.getFiller c) options)))
 
 (defmethod form OWLDataOneOf
   [^OWLDataOneOf c options]
@@ -1067,8 +1067,8 @@ element is a list."
         OWLFacet/MIN_EXCLUSIVE
         (unnamed-entity :> options)
         OWLFacet/MIN_INCLUSIVE
-        (unnamed-entity :>= options)
-        }
+        (unnamed-entity :>= options)}
+
        d))
 
 (defmethod form OWLDatatypeRestriction

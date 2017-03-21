@@ -22,8 +22,8 @@
             [tawny.lookup]
             [tawny.protocol :as p]
             [tawny.render]
-            [clojure.pprint]
-            )
+            [clojure.pprint])
+
   (:import [java.io StringWriter PrintWriter]
            [org.semanticweb.owlapi.model
             OWLAnnotation
@@ -32,90 +32,90 @@
             OWLNamedObject
             OWLOntologyLoaderListener$LoadingEvent
             OWLOntologyLoaderListener$LoadingFinishedEvent
-            IRI OWLOntologyManager
-            ]
-           ))
+            IRI OWLOntologyManager]))
+
+
 
 (o/defmontfn fetch-doc
   "Given an owlobject and potentially ontology, return documentation.
 The documentation is generated over the live object (owlobjects are mutable).
 It includes all labels, comments and a rendered version of the owlobject."
   ([^OWLOntology ontology ^OWLEntity owlobject]
-     (let [annotation
-           (org.semanticweb.owlapi.search.EntitySearcher/getAnnotations
-            owlobject ontology)
-           label
-           (filter
-            (fn [^OWLAnnotation a]
-              (-> a
-                   (.getProperty)
-                   (.isLabel)))
+   (let [annotation
+         (org.semanticweb.owlapi.search.EntitySearcher/getAnnotations
+          owlobject ontology)
+         label
+         (filter
+          (fn [^OWLAnnotation a]
+            (-> a
+                 (.getProperty)
+                 (.isLabel)))
 
-            annotation)
+          annotation)
 
-           comment
-           (filter
-            (fn [^OWLAnnotation a]
-              (-> a
-                  (.getProperty)
-                  (.isComment)))
-            annotation)
+         comment
+         (filter
+          (fn [^OWLAnnotation a]
+            (-> a
+                (.getProperty)
+                (.isComment)))
+          annotation)
 
-           iri (-> owlobject
-                   (.getIRI)
-                   (.toURI)
-                   (.toString))
+         iri (-> owlobject
+                 (.getIRI)
+                 (.toURI)
+                 (.toString))
 
-           writer (StringWriter.)
-           pwriter (PrintWriter. writer)
-           line (fn [& args]
-                  (.println pwriter
-                            (str (clojure.string/join args))))]
-       (line "")
-       (line
-        (str (.getEntityType owlobject))
-        ": "
-        (tawny.lookup/var-maybe-qualified-str
-         (get
-          (tawny.lookup/all-iri-to-var) iri)))
+         writer (StringWriter.)
+         pwriter (PrintWriter. writer)
+         line (fn [& args]
+                (.println pwriter
+                          (str (clojure.string/join args))))]
+     (line "")
+     (line
+      (str (.getEntityType owlobject))
+      ": "
+      (tawny.lookup/var-maybe-qualified-str
+       (get
+        (tawny.lookup/all-iri-to-var) iri)))
 
-       (line "IRI: " iri)
-       (line "Labels:")
-       (doseq [^OWLAnnotation l label]
-         (line "\t" (.getValue l)))
+     (line "IRI: " iri)
+     (line "Labels:")
+     (doseq [^OWLAnnotation l label]
+       (line "\t" (.getValue l)))
 
-       (line "Comments:")
+     (line "Comments:")
 
-       (doseq [^OWLAnnotation c comment]
-         (line "\t" (.getValue c)))
-       (line "Full Definition:")
-       (line
+     (doseq [^OWLAnnotation c comment]
+       (line "\t" (.getValue c)))
+     (line "Full Definition:")
+     (line
         ;; hmm pprint here takes 95% of the time. Problematic
         ;; str is much much quicker, but produces a rubbishy output!
-        (clojure.pprint/pprint
-         (tawny.render/as-form owlobject)
-         writer))
-       (.close writer)
-       (str writer))))
+      (clojure.pprint/pprint
+       (tawny.render/as-form owlobject)
+       writer))
+     (.close writer)
+     (str writer))))
 
 (defn print-doc
   "Print the documentation for the owlobject. See fetch-doc for more on how
 this documentation is generated."
   ([owlobject]
-     (println (fetch-doc owlobject)))
+   (println (fetch-doc owlobject)))
   ([owlobject ontology]
-     (println (fetch-doc owlobject ontology))))
+   (println (fetch-doc owlobject ontology))))
 
 (defn print-ns-doc
   "Print the documentation for all owlobjects stored in vars within a given
 namespace."
   ([]
-     (print-ns-doc *ns*))
+   (print-ns-doc *ns*))
   ([ns]
-     (doseq [v
-             (vals
-              (tawny.lookup/iri-to-var ns))]
-       (println (fetch-doc (var-get v))))))
+   (doseq [v
+           (vals
+            (tawny.lookup/iri-to-var ns))]
+     (println (fetch-doc (var-get v))))))
 
 
 (defn update-var-doc
@@ -140,12 +140,12 @@ once."
 (defn update-ns-doc
   "Updates the documentation for all vars in a namespace."
   ([]
-     (update-ns-doc *ns*))
+   (update-ns-doc *ns*))
   ([ns]
-     (doseq [v
-             (vals
-              (tawny.lookup/iri-to-var ns))]
-       (update-var-doc v))))
+   (doseq [v
+           (vals
+            (tawny.lookup/iri-to-var ns))]
+     (update-var-doc v))))
 
 
 (defn println-load-listener
@@ -184,48 +184,48 @@ This is function is meant for usage at the REPL; see 'tawny.read' for more
 integrated solution. If an manager is passed in, it should not already have
 loaded an ontology with the same name."
   ([^IRI iri ^OWLOntologyManager manager]
-     (let [listener
-           (println-load-listener)]
-       (.addOntologyLoaderListener
-        manager listener)
-       (.loadOntologyFromOntologyDocument
-        manager
-        iri)))
+   (let [listener
+         (println-load-listener)]
+     (.addOntologyLoaderListener
+      manager listener)
+     (.loadOntologyFromOntologyDocument
+      manager
+      iri)))
   ([iri]
-     (load-ontology iri (new-manager))))
+   (load-ontology iri (new-manager))))
 
 (defn materialize-ontology
   "Loads an ontology, attempts to resolve all of its imports, then
 saves the import clojure to the resources directory. Returns a map of IRI
 to file names. Save ontologies in 'root' or the resources directory."
   ([iri]
-     (materialize-ontology iri "dev-resources/"))
+   (materialize-ontology iri "dev-resources/"))
   ([iri root]
-      (let [manager (new-manager)
-            ontology (load-ontology iri manager)]
-        (into {}
-              (for [^OWLOntology k (.getOntologies manager)]
-                [(-> k
-                     (.getOntologyID)
-                     (.getOntologyIRI)
-                     (.toString))
-                 (let
-                     [file-maybe
-                      (-> k
-                          (.getOntologyID)
-                          (.getOntologyIRI)
-                          (.orNull)
-                          (p/as-iri)
-                          (.getFragment))
-                      stem
-                      (if file-maybe
-                        file-maybe
-                        (str (java.util.UUID/randomUUID)))
-                      file (str root stem)]
-                   (.saveOntology manager k
-                                  (java.io.FileOutputStream.
-                                   (java.io.File. file)))
-                   stem)])))))
+   (let [manager (new-manager)
+         ontology (load-ontology iri manager)]
+     (into {}
+           (for [^OWLOntology k (.getOntologies manager)]
+             [(-> k
+                  (.getOntologyID)
+                  (.getOntologyIRI)
+                  (.toString))
+              (let
+                  [file-maybe
+                   (-> k
+                       (.getOntologyID)
+                       (.getOntologyIRI)
+                       (.orNull)
+                       (p/as-iri)
+                       (.getFragment))
+                   stem
+                   (if file-maybe
+                     file-maybe
+                     (str (java.util.UUID/randomUUID)))
+                   file (str root stem)]
+                (.saveOntology manager k
+                               (java.io.FileOutputStream.
+                                (java.io.File. file)))
+                stem)])))))
 
 (def *c
   "The last change that an on-change listener saw."
@@ -239,8 +239,8 @@ to file names. Save ontologies in 'root' or the resources directory."
              []
              (ontologiesChanged
               [l]
-               (reset! *c l)
-               (f)))]
+              (reset! *c l)
+              (f)))]
      (.addOntologyChangeListener
       (o/owl-ontology-manager)
       listener)
@@ -252,15 +252,15 @@ to file names. Save ontologies in 'root' or the resources directory."
 (defn auto-save
   "Autosave the current ontology everytime any change happens."
   ([filename format]
-     (auto-save filename format false))
+   (auto-save filename format false))
   ([filename format nosave]
-     (let [f #(o/save-ontology filename format)]
+   (let [f #(o/save-ontology filename format)]
        ;; save immediately
-       (when-not nosave
-         (f))
-       (when-not @auto-save-listener
-         (reset! auto-save-listener
-                 (on-change f))))))
+     (when-not nosave
+       (f))
+     (when-not @auto-save-listener
+       (reset! auto-save-listener
+               (on-change f))))))
 
 (defn auto-save-off
   "Stop autosaving ontologies."
@@ -272,15 +272,15 @@ to file names. Save ontologies in 'root' or the resources directory."
 
 (defn name-annotations
   ([]
-     (name-annotations (o/get-current-ontology)))
+   (name-annotations (o/get-current-ontology)))
   ([^org.semanticweb.owlapi.model.OWLOntology o]
-     (filter
-      (fn [axiom]
-        (tawny.util/on-type
-         org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom axiom
-         (= (var-get #'tawny.owl/tawny-name-property)
-            (.getProperty axiom))))
-      (.getAxioms o))))
+   (filter
+    (fn [axiom]
+      (tawny.util/on-type
+       org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom axiom
+       (= (var-get #'tawny.owl/tawny-name-property)
+          (.getProperty axiom))))
+    (.getAxioms o))))
 
 (defn make-no-name
   "Remove name annotations from current and future entities in the current
@@ -289,37 +289,37 @@ to file names. Save ontologies in 'root' or the resources directory."
   reading of the ontology. There is no way to reverse this function, so use
   with care."
   ([]
-     (make-no-name (o/get-current-ontology)))
+   (make-no-name (o/get-current-ontology)))
   ([o]
-     (dosync
-      (alter
-       (tawny.owl/ontology-options o)
-       merge {:noname true}))
-     (apply tawny.owl/remove-axiom
-            o (name-annotations))))
+   (dosync
+    (alter
+     (tawny.owl/ontology-options o)
+     merge {:noname true}))
+   (apply tawny.owl/remove-axiom
+          o (name-annotations))))
 
 (defn render-ontology
   ([^OWLOntology o file]
-     (render-ontology o file {}))
+   (render-ontology o file {}))
   ([^OWLOntology o file options]
-     (println "Rendering:" o)
-     (spit file "")
-     (let [render-options
-           (flatten
-            (seq
-             (merge
-              {:explicit true
-               :ontologies #{o}}
-              options)))]
-       (doseq [n (.getSignature o)]
-         (spit
-          file
-          (str
-           (pr-str
-            (apply
-             tawny.render/as-form
-             n render-options)) "\n")
-          :append true)))))
+   (println "Rendering:" o)
+   (spit file "")
+   (let [render-options
+         (flatten
+          (seq
+           (merge
+            {:explicit true
+             :ontologies #{o}}
+            options)))]
+     (doseq [n (.getSignature o)]
+       (spit
+        file
+        (str
+         (pr-str
+          (apply
+           tawny.render/as-form
+           n render-options)) "\n")
+        :append true)))))
 
 (defn render-iri
   [iri file]

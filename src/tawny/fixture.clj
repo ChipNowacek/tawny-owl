@@ -78,6 +78,6 @@ and defines the reasoner factory to use."
   "Returns a fixture which sets the ontology from the namespace ns and defines
 the reasoner factory to use. ns should be a symbol"
   ([ns reasoner]
-     (fn [tests]
-       (let [o (get @ontology-for-namespace (find-ns ns))]
-         ((ontology-and-reasoner o reasoner) tests)))))
+   (fn [tests]
+     (let [o (get @ontology-for-namespace (find-ns ns))]
+       ((ontology-and-reasoner o reasoner) tests)))))

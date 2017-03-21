@@ -102,8 +102,8 @@ IRIs are placed before pre-IRIs, and both are organised alphabetically."
               true
               ;; both of the same type, organise alphabetically
               :default
-              (compare x y)
-              ))
+              (compare x y)))
+
            map))
 
 (defn obo-save-map
@@ -154,8 +154,8 @@ longer exist in the ontology. There are, effectively, obsolete terms."
     (doseq [[name iri]
             (extract-obsolete
              (:name-to-iri-remembered options)
-             (:name-to-iri-current options))
-            ]
+             (:name-to-iri-current options))]
+
       (printf "Remembered but not longer in ontology: %s,%s\n"
               name iri))))
 
@@ -173,7 +173,7 @@ a new numeric identifier is created, incrementing from the current largest."
                 0))
             (seq name-to-iri))
         ;; the highest number of the current IDs
-        biggest-numeric (apply max ids)
+       biggest-numeric (apply max ids)
         ;; now get all the names that need new IDs
         preirinames
         (for [[name iri] name-to-iri
